@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+	
+	<title>Editable Invoice</title>
+	
+	<link rel='stylesheet' type='text/css' href='css/style.css' />
+	<link rel='stylesheet' type='text/css' href='css/print.css' media="print" />
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- <script type='text/javascript' src='js/jquery-1.3.2.min.js'></script> -->
+	
+	
+
+</head>
+
+<body>
+	<nav>
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light">
+			<a class="navbar-brand" href="#">Navbar</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+		  
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			  <ul class="navbar-nav ml-auto">
+				<li class="nav-item active p-2">
+				  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item p-2">
+					<a class="nav-link" id="addrow" href="javascript:;" title="Add a row">Add a row</a>
+				</li>
+				<li class="nav-item p-2">
+					<button type="button" onclick="generatePDF()" class="btn btn-outline-success">Download as PDF</button>
+				</li>
+				
+			</div>
+		  </nav>
+		
+		    
+		 
+	</nav>
+	<div id="page-wrap" >
+
+	<div id="invoice" style="margin: 30px;">
+
+		<textarea id="header">INVOICE</textarea>
+		
+		<div id="identity">
+		
+            <p id="address">Pink City Marble<br>
+				123 Appleseed Street<br>
+				Mokhampura, Rajasthan 53719<br>
+
+				Phone: (555) 555-5555
+			</p>
+
+            <div id="logo">
+              <div id="logohelp">
+                <input id="imageloc" type="text" size="50" value="" /><br />
+                (max width: 540px, max height: 100px)
+              </div>
+			  <h1 id="customer-title">Pink City Marble
+				</h1>
+            </div>
+		</div>
+
+		<div style="clear:both"></div>
+		
+		<div id="customer">
+		
+            <table id="meta-1">
+					<tr>
+						<td class="meta-1-head">Name</td>
+						<td><textarea class="name"></textarea></td>
+					</tr>
+					<tr>
+						<td class="meta-1-head">Place</td>	
+						<td><textarea class="place"></textarea></td>
+					</tr>
+			</table>
+			
+            <table id="meta">
+                <tr>
+                    <td class="meta-head">Invoice #</td>
+                    <td><textarea class="invoiceNo">000123</textarea></td>
+                </tr>
+                <tr>
+
+                    <td class="meta-head">Date</td>
+                    <td><textarea id="date"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="meta-head">Truck No</td>
+                    <td><textarea class="truck"></textarea></td>
+                </tr>
+
+            </table>
+		
+		</div>
+		
+		<table id="items">
+			
+				<tr>
+					<th>Mark</th>
+					<th>Length</th>
+					<th>Pieces</th>
+					<th>hieght</th>
+					<th>CFT</th>
+					<th>SQFT</th>
+					<th>Rate</th>
+					<th>Amount</th>
+				</tr>
+			
+			
+		  <tr class="item-row">
+			  <!-- <td class="item-name"><span class="delete-wpr"><textarea></textarea><a class="delete" href="javascript:;" title="Remove row">X</a></span></td> -->
+			  <td colspan="1"><textarea></textarea></td>
+			  <td><textarea class="length"></textarea></td>
+			  <td><textarea class="pieces"></textarea></td>
+			  <td><textarea class="hieght"></textarea></td>
+			  <td><span class="cft"></span></td>
+			  <td><textarea class="sqft"></textarea></td>
+			  <td><textarea class="rate"></textarea></td>
+			  <td><span class="amount"></span></td>
+		  </tr>
+		  
+		 
+		  
+		  
+
+		  
+		  <tr>
+		      <td colspan="7" class="total-line">Subtotal</td>
+		      <td class="total-value" colspan="2"><div id="subtotal"></div></td>
+		  </tr>
+			  
+			  <tr>
+				 <td>Other Charges</td>
+				 <td> Insurance</td>
+				 <td>GST</td>
+				 <td>Loading</td>
+				 <td>Total</td>
+
+			  </tr>
+			  <tr>
+				  <td colspan="1"><textarea class="other" onchange="update_other();"></textarea></td>
+				  <td colspan="1"><textarea class="insurance" onchange="update_other();"></textarea></td>
+				  <td colspan="1"><textarea class="gst"onchange="update_other();"></textarea></td>
+				  <td colspan="1"><textarea class="loading" onchange="update_other();"></textarea></td>
+				  <td colspan="4"><span class="total"></span></td>
+			  </tr>
+
+			<tr>
+				<td colspan="2" class="blank"> </td>
+				<td colspan="2" class="total-line">total</td>
+				<td colspan="4" class="total-value"><div id="total-3"></div></td>
+			</tr>
+			<tr>
+  
+				<td colspan="2" class="blank"> </td>
+				<td colspan="4" class="total-line">Amount in Words</td>
+				<td colspan="2"class="total-value"><div id="words"></div></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="blank"> </td>
+				<td colspan="4" class="total-line">Amount Paid</td>
+				<td colspan="2" class="total-value"><textarea id="paid"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" class="blank"> </td>
+				<td colspan="4" class="total-line balance">Balance Due</td>
+				<td colspan="2" class="total-value balance"><div class="due"></div></td>
+			</tr>
+  
+		
+		
+		</table>
+		
+		<div id="terms">
+		  <h5>Terms</h5>
+		  <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
+		</div>
+	
+	</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>	
+	<script type='text/javascript' src='js/example.js'></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="js/html2pdf.bundle.min.js"></script>
+	<script>
+		function generatePDF() {
+		  // Choose the element that our invoice is rendered in.
+		  const element = document.getElementById("invoice");
+		  // Choose the element and save the PDF for our user.
+		  html2pdf()
+		  .set({ html2canvas: { scale: 2 },image:{ type: 'jpeg', quality: 0.97 } })
+		  .from(element)
+		  .save();
+		}
+	  </script>
+</body>
+
+</html>
