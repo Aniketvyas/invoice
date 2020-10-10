@@ -79,6 +79,7 @@ function update_total() {
 
 function update_balance() {
   var due = $("#total-3").html() - $("#paid").val();
+  if(isNaN(due)){ due = 0;}
   due = due.toFixed(2);
   $('.due').html(due);
 }
@@ -139,13 +140,16 @@ function update_amount() {
   update_total();
 }
 function update_all_total() {
-  var total = $('.total').html();
-  var subtotal = $('#subtotal').html();
-  console.log(total,subtotal);
+  var total = $('.total').text();
+  var subtotal = $('#subtotal').text();
+  console.log(subtotal === "");
+  if(isNaN(total)){ total = 0 ;}
+  if(isNaN(subtotal) || subtotal === ""){ subtotal = 0;}
+  console.log(subtotal);
   var final = parseFloat(total)+ parseFloat(subtotal);
   final = final.toFixed(2);
   $('#total-3').html(final);
-  console.log(parseFloat(total),parseFloat(subtotal));
+  console.log(total,subtotal);
   numberToWords(final);
 }
 
