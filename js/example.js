@@ -66,19 +66,21 @@ function update_total() {
   $('.amount').each(function(i){
     price = $(this).html();
     if (!isNaN(price)) total += Number(price);
-  });
 
+    update_all_total();
+  });
+  update_all_total();
   total = total.toFixed(2);
 
   $('#subtotal').html(total);
-  $('#total').html(total);
+  $('#total-3').html(total);
   
   update_balance();
-  numberToWords(total);
+  // numberToWords($('#total-3').text());
 }
 
 function update_balance() {
-  var due = $("#total-3").html() - $("#paid").val();
+  var due = $("#total-3").text() - $("#paid").val();
   if(isNaN(due)){ due = 0;}
   due = due.toFixed(2);
   $('.due').html(due);
@@ -91,6 +93,7 @@ function update_price() {
   isNaN(price) ? row.find('.cft').html("N/A") : row.find('.cft').html(price);
   
   update_total();
+  update_all_total();
 }
 function numberToWords(amount) {
   var words = new Array();
@@ -193,6 +196,7 @@ function update_amount() {
   // total_amount = parseInt(total_amount);
   isNaN(total_amount) ? row.find('.amount').html("N/A") : row.find('.amount').html(total_amount);
   update_total();
+  update_all_total();
 }
 function update_all_total() {
   var total = $('.total').text();
