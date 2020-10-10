@@ -31,6 +31,14 @@
 				<li class="nav-item p-2">
 					<a class="nav-link" id="addrow" href="javascript:;" title="Add a row">Add a row</a>
 				</li>
+				<li class="nav-item dropdown p-2">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  Delete a row
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					  <textarea id="rowID"></textarea> <br><button type="button" class="btn btn-outline-danger btn-sm" id="delete" onclick="deleteRow();">Delete row</button>
+					</div>
+				  </li>
 				<li class="nav-item p-2">
 					<button type="button" onclick="generatePDF()" class="btn btn-outline-success">Download as PDF</button>
 				</li>
@@ -56,7 +64,7 @@
             <table id="meta-1">
 					<tr>
 						<td class="meta-1-head">Name</td>
-						<td><textarea class="name"></textarea></td>
+						<td><textarea  class="name"></textarea></td>
 					</tr>
 					<tr>
 						<td class="meta-1-head">Place</td>	
@@ -82,88 +90,91 @@
             </table>
 		
 		</div>
-		
-		<table id="items">
-			
+		<div class="container">
+			<table id="items">
+				
+					<thead>
+						<!-- <th></th> -->
+						<th>S.No</th>
+						<th>Mark</th>
+						<th>Length</th>
+						<th>Pieces</th>
+						<th>hieght</th>
+						<th>CFT</th>
+						<th>SQFT</th>
+						<th>Rate</th>
+						<th>Amount</th>
+					</thead>
+					<tbody>
+						<tr class="item-row" id="1">
+							<!-- <td class="item-name"><span class="delete-wpr"><a class="delete" href="javascript:;" title="Remove row">X</a></span></td> -->
+							<td>1</td>
+							<td><input type="text"></td>
+							<td><input type="text" columns="2" class="length"></td>
+							<td><input type="text" class="pieces"></td>
+							<td><input type="text" class="hieght"></td>
+							<td><span class="cft"></span></td>
+							<td><input type="text" class="sqft"></td>
+							<td><input type="text" class="rate"></td>
+							<td><span class="amount"></span></td>
+						</tr>
+					</tbody>
+			</table>
+			<table style="float:right">
 				<tr>
-					<th>Mark</th>
-					<th>Length</th>
-					<th>Pieces</th>
-					<th>hieght</th>
-					<th>CFT</th>
-					<th>SQFT</th>
-					<th>Rate</th>
-					<th>Amount</th>
+					<td class="total-line">Subtotal</td>
+					<td class="total-value" id="subtotal">235423</td>
 				</tr>
-			
-			
-		  <tr class="item-row">
-			  <!-- <td class="item-name"><span class="delete-wpr"><textarea></textarea><a class="delete" href="javascript:;" title="Remove row">X</a></span></td> -->
-			  <td colspan="1"><textarea></textarea></td>
-			  <td><textarea class="length"></textarea></td>
-			  <td><textarea class="pieces"></textarea></td>
-			  <td><textarea class="hieght"></textarea></td>
-			  <td><span class="cft"></span></td>
-			  <td><textarea class="sqft"></textarea></td>
-			  <td><textarea class="rate"></textarea></td>
-			  <td><span class="amount"></span></td>
-		  </tr>
-		  
-		 
-		  
-		  
+			</table><br>
 
-		  
-		  <tr>
-		      <td colspan="7" class="total-line">Subtotal</td>
-		      <td class="total-value" colspan="2" id="subtotal"></td>
-		  </tr>
-			  
-			  <tr>
-				 <td>Other Charges</td>
-				 <td> Insurance</td>
-				 <td>GST</td>
-				 <td>Loading</td>
-				 <td>Total</td>
-
-			  </tr>
-			  <tr>
-				  <td colspan="1"><textarea class="other" onchange="update_other();"></textarea></td>
-				  <td colspan="1"><textarea class="insurance" onchange="update_other();"></textarea></td>
-				  <td colspan="1"><textarea class="gst"onchange="update_other();"></textarea></td>
-				  <td colspan="1"><textarea class="loading" onchange="update_other();"></textarea></td>
+			<table class="meta-head" id="othe">
+				<thead>
+					<th>Other Charges</th>
+					<th>Insurance</th>
+					<th>GST</th>
+					<th>Loading</th>
+					<th>Total</th>
+				</thead>
+	
+			  <tbody>
+				  <td colspan="1"><input type="text" class="other" onchange="update_other();"></td>
+				  <td colspan="1"><input type="text" class="insurance" onchange="update_other();"></td>
+				  <td colspan="1"><input type="text" class="gst"onchange="update_other();"></td>
+				  <td colspan="1"><input type="text" class="loading" onchange="update_other();"></td>
 				  <td colspan="4"><span class="total"></span></td>
-			  </tr>
-
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="2" class="total-line">total</td>
-				<td colspan="4" class="total-value"><div id="total-3"></div></td>
-			</tr>
-			<tr>
-  
-				<td colspan="2" class="blank"> </td>
-				<td colspan="4" class="total-line">Amount in Words</td>
-				<td colspan="2"class="total-value"><div id="words"></div></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="4" class="total-line">Amount Paid</td>
-				<td colspan="2" class="total-value"><textarea id="paid"></textarea></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="blank"> </td>
-				<td colspan="4" class="total-line balance">Balance Due</td>
-				<td colspan="2" class="total-value balance"><div class="due"></div></td>
-			</tr>
+			  </tbody>
+			</table><br>
+			<table style="text-align:center;">
+				<tr id="othe">
+					
+					<td colspan="2" class="total-line">total</td>
+					<td colspan="4" class="total-value"><div id="total-3"></div></td>
+				</tr>
+				<tr id="other">
+	
+					<td colspan="4" class="total-line">Amount in Words</td>
+					<td colspan="2"class="total-value"><div id="words"></div></td>
+				</tr>
+				<tr class="other">
+			
+					<td colspan="4" class="total-line">Amount Paid</td>
+					<td colspan="2" class="total-value"><input type="text" id="paid"></td>
+				</tr>
+				<tr class="other">
+			
+					<td colspan="4" class="total-line balance">Balance Due</td>
+					<td colspan="2" class="total-value balance"><div class="due"></div></td>
+				</tr>
+				</table>
   
 		
 		
 		</table>
+		</div>
 		
 		<div id="terms">
 		  <h5>Terms</h5>
-		  <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
+		  NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.
 		</div>
 	
 	</div>

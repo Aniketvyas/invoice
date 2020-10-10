@@ -92,33 +92,86 @@ function update_price() {
   
   update_total();
 }
-function numberToWords(number) {  
-  var digit = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];  
-  var elevenSeries = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];  
-  var countingByTens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];  
-  var shortScale = ['', 'thousand', 'million', 'billion', 'trillion'];  
-
-  number = number.toString(); 
-  number = number.replace(/[\, ]/g, '');
-   if (number != parseFloat(number)) return 'not a number';
-    var x = number.indexOf('.');
-     if (x == -1) x = number.length;
-      if (x > 15) return 'too big';
-       var n = number.split('');
-        var str = ''; var sk = 0;
-         for (var i = 0; i < x; i++) {
-            if ((x - i) % 3 == 2) {
-               if (n[i] == '1') { 
-                 str += elevenSeries[Number(n[i + 1])] + ' '; i++; sk = 1; }
-                  else if (n[i] != 0) { str += countingByTens[n[i] - 2] + ' '; sk = 1; } }
-                   else if (n[i] != 0) { str += digit[n[i]] + ' '; 
-                   if ((x - i) % 3 == 0) str += 'hundred '; sk = 1; }
-                    if ((x - i) % 3 == 1) { if (sk) str += shortScale[(x - i - 1) / 3] + ' '; sk = 0; } }
-          if (x != number.length) {
-             var y = number.length; str += 'point '; 
-             for (var i = x + 1; i < y; i++) str += digit[n[i]] + ' '; } 
-             str = str.replace(/\number+/g, ' ');
-              $('#words').html(str.trim());
+function numberToWords(amount) {
+  var words = new Array();
+  words[0] = '';
+  words[1] = 'One';
+  words[2] = 'Two';
+  words[3] = 'Three';
+  words[4] = 'Four';
+  words[5] = 'Five';
+  words[6] = 'Six';
+  words[7] = 'Seven';
+  words[8] = 'Eight';
+  words[9] = 'Nine';
+  words[10] = 'Ten';
+  words[11] = 'Eleven';
+  words[12] = 'Twelve';
+  words[13] = 'Thirteen';
+  words[14] = 'Fourteen';
+  words[15] = 'Fifteen';
+  words[16] = 'Sixteen';
+  words[17] = 'Seventeen';
+  words[18] = 'Eighteen';
+  words[19] = 'Nineteen';
+  words[20] = 'Twenty';
+  words[30] = 'Thirty';
+  words[40] = 'Forty';
+  words[50] = 'Fifty';
+  words[60] = 'Sixty';
+  words[70] = 'Seventy';
+  words[80] = 'Eighty';
+  words[90] = 'Ninety';
+  amount = amount.toString();
+  var atemp = amount.split(".");
+  var number = atemp[0].split(",").join("");
+  var n_length = number.length;
+  var words_string = "";
+  if (n_length <= 9) {
+      var n_array = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0);
+      var received_n_array = new Array();
+      for (var i = 0; i < n_length; i++) {
+          received_n_array[i] = number.substr(i, 1);
+      }
+      for (var i = 9 - n_length, j = 0; i < 9; i++, j++) {
+          n_array[i] = received_n_array[j];
+      }
+      for (var i = 0, j = 1; i < 9; i++, j++) {
+          if (i == 0 || i == 2 || i == 4 || i == 7) {
+              if (n_array[i] == 1) {
+                  n_array[j] = 10 + parseInt(n_array[j]);
+                  n_array[i] = 0;
+              }
+          }
+      }
+      value = "";
+      for (var i = 0; i < 9; i++) {
+          if (i == 0 || i == 2 || i == 4 || i == 7) {
+              value = n_array[i] * 10;
+          } else {
+              value = n_array[i];
+          }
+          if (value != 0) {
+              words_string += words[value] + " ";
+          }
+          if ((i == 1 && value != 0) || (i == 0 && value != 0 && n_array[i + 1] == 0)) {
+              words_string += "Crores ";
+          }
+          if ((i == 3 && value != 0) || (i == 2 && value != 0 && n_array[i + 1] == 0)) {
+              words_string += "Lakhs ";
+          }
+          if ((i == 5 && value != 0) || (i == 4 && value != 0 && n_array[i + 1] == 0)) {
+              words_string += "Thousand ";
+          }
+          if (i == 6 && value != 0 && (n_array[i + 1] != 0 && n_array[i + 2] != 0)) {
+              words_string += "Hundred and ";
+          } else if (i == 6 && value != 0) {
+              words_string += "Hundred ";
+          }
+      }
+      words_string = words_string.split("  ").join(" ");
+  }
+  $('#words').html(words_string);
 }
 
 function update_amount() {
@@ -131,30 +184,32 @@ function update_amount() {
     total_amount = sqft * rate;
   }
   else{
-    total_amount = cft * rate;
+    total_amount = parseInt(cft * rate);
+    console.log(total_amount);
+
   }
-  console.log(total_amount.toFixed(2));
-  total_amount.toFixed(2);
-  console.log(total_amount);
+  // console.log(total_amount.toFixed(2));
+  // total_amount = total_amount.toFixed(2);
+  // total_amount = parseInt(total_amount);
   isNaN(total_amount) ? row.find('.amount').html("N/A") : row.find('.amount').html(total_amount);
   update_total();
 }
 function update_all_total() {
   var total = $('.total').text();
   var subtotal = $('#subtotal').text();
-  console.log(subtotal === "");
+  // console.log(subtotal === "");
   if(isNaN(total)){ total = 0 ;}
   if(isNaN(subtotal) || subtotal === ""){ subtotal = 0;}
-  console.log(subtotal);
+  // con/sole.log(subtotal);
   var final = parseFloat(total)+ parseFloat(subtotal);
   final = final.toFixed(2);
   $('#total-3').html(final);
-  console.log(total,subtotal);
+  // console.log(total,subtotal);
   numberToWords(final);
 }
 
 function update_other() {
-  console.log('ghjk');
+  // console.log('ghjk');
   var other = parseFloat($('.other').val());
   var insurance = parseFloat($('.insurance').val());
   var gst = parseFloat($('.gst').val());
@@ -165,7 +220,7 @@ function update_other() {
   if (isNaN(loading)){ loading = 0}
   total = (other+insurance+gst+loading).toFixed(2)
   $('.total').html(total);
-  console.log(other+gst+loading+insurance);
+  // console.log(other+gst+loading+insurance);
   update_all_total();
 }
 
@@ -179,11 +234,20 @@ function bind() {
   $('insurance').change(update_other);
   $('gst').change(update_other);
   $('other').change(update_other);
-  console.log('did it');
-  
+  // console.lo/g('did it');
+  // 
 
 }
 bind();
+
+function deleteRow(){
+  var a = $('#rowID').val();
+  // console.log("#"+a);
+  $("#"+a).remove();
+  update_total();
+
+};
+
 
 $(document).ready(function() {
  
@@ -200,18 +264,15 @@ $(document).ready(function() {
   $("#paid").blur(update_balance);
    
   $("#addrow").click(function(){
-    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td><textarea class="length">0</textarea></td><td><textarea class="pieces">0</textarea></td><td><textarea class="hieght">0</textarea></td><td><span class="cft">0</span></td><td><textarea class="sqft"></textarea></td><td><textarea class="rate"></textarea></td><td><span class="amount"></span></td></tr>');
+    var id = parseInt($('.item-row:last')[0].id) + 1;
+    $(".item-row:last").after('<tr class="item-row" id='+id+'><td id="serial">'+id+'</td><td><input type="text"></td><td><input type="text" class="length"></td><td><input type="text" class="pieces"></td><td><input type="text" class="hieght"></td><td><span class="cft"></span></td><td><input type="text" class="sqft"></td><td><input type="text" class="rate"></td><td><span class="amount"></span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
     bind();
   });
   
   // bind();
   
-  $(".delete").live('click',function(){
-    $(this).parents('.item-row').remove();
-    update_total();
-    if ($(".delete").length < 2) $(".delete").hide();
-  });
+
   
   $("#cancel-logo").click(function(){
     $("#logo").removeClass('edit');
