@@ -68,7 +68,7 @@ function update_total() {
     if (!isNaN(price)) total += Number(price);
   });
 
-  total = roundNumber(total,2);
+  total = total.toFixed(2);
 
   $('#subtotal').html(total);
   $('#total').html(total);
@@ -79,16 +79,15 @@ function update_total() {
 
 function update_balance() {
   var due = $("#total-3").html() - $("#paid").val();
-  due = roundNumber(due,2);
-  
+  due = due.toFixed(2);
   $('.due').html(due);
 }
 
 function update_price() {
   var row = $(this).parents('.item-row');
-  var price = row.find('.length').val() * row.find('.pieces').val() * row.find('.hieght').val();
-  price = roundNumber(price,2);
-  isNaN(price) ? row.find('.cft').html("N/A") : row.find('.cft').html(price/1728);
+  var price = (row.find('.length').val() * row.find('.pieces').val() * row.find('.hieght').val())/1728;
+  price = price.toFixed(2);
+  isNaN(price) ? row.find('.cft').html("N/A") : row.find('.cft').html(price);
   
   update_total();
 }
@@ -126,14 +125,16 @@ function update_amount() {
   var cft = row.find('.cft').text() ;
   var sqft = row.find('.sqft').val();
   var rate = row.find('.rate').val();
+  var total_amount;
   if(sqft){
-    var total_amount = row.find('.sqft').val() * row.find('.rate').val();
+    total_amount = sqft * rate;
   }
   else{
-    var total_amount = row.find('.cft').text() * row.find('.rate').val();
+    total_amount = cft * rate;
   }
+  console.log(total_amount.toFixed(2));
+  total_amount.toFixed(2);
   console.log(total_amount);
-  total_amount = roundNumber(total_amount,2);
   isNaN(total_amount) ? row.find('.amount').html("N/A") : row.find('.amount').html(total_amount);
   update_total();
 }
@@ -141,7 +142,8 @@ function update_all_total() {
   var total = $('.total').html();
   var subtotal = $('#subtotal').html();
   console.log(total,subtotal);
-  var final = parseFloat(total)+ parseFloat(subtotal)
+  var final = parseFloat(total)+ parseFloat(subtotal);
+  final = final.toFixed(2);
   $('#total-3').html(final);
   console.log(parseFloat(total),parseFloat(subtotal));
   numberToWords(final);
@@ -149,11 +151,16 @@ function update_all_total() {
 
 function update_other() {
   console.log('ghjk');
-  var other = $('.other').val();
-  var insurance = $('.insurance').val();
-  var gst = $('.gst').val();
-  var loading = $('.loading').val();
-  $('.total').html(parseFloat(other)+parseFloat(gst)+parseFloat(insurance)+parseFloat(loading));
+  var other = parseFloat($('.other').val());
+  var insurance = parseFloat($('.insurance').val());
+  var gst = parseFloat($('.gst').val());
+  var loading = parseFloat($('.loading').val())
+  if (isNaN(other)){ other = 0 ;}
+  if (isNaN(insurance)){ insurance = 0}
+  if (isNaN(gst)){gst = 0}
+  if (isNaN(loading)){ loading = 0}
+  total = (other+insurance+gst+loading).toFixed(2)
+  $('.total').html(total);
   console.log(other+gst+loading+insurance);
   update_all_total();
 }
