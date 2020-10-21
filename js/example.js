@@ -66,7 +66,6 @@ function update_total() {
   $('.amount').each(function(i){
     price = $(this).html();
     if (!isNaN(price)) total += Number(price);
-
     update_all_total();
   });
   update_all_total();
@@ -184,7 +183,7 @@ function update_amount() {
   var rate = row.find('.rate').val();
   var total_amount;
   if(sqft){
-    total_amount = sqft * rate;
+    total_amount = parseInt(sqft * rate);
   }
   else{
     total_amount = parseInt(cft * rate);
@@ -205,7 +204,7 @@ function update_all_total() {
   if(isNaN(total)){ total = 0 ;}
   if(isNaN(subtotal) || subtotal === ""){ subtotal = 0;}
   // con/sole.log(subtotal);
-  var final = parseFloat(total)+ parseFloat(subtotal);
+  var final = parseInt(total)+ parseInt(subtotal);
   final = final.toFixed(2);
   $('#total-3').html(final);
   // console.log(total,subtotal);
@@ -214,10 +213,10 @@ function update_all_total() {
 
 function update_other() {
   // console.log('ghjk');
-  var other = parseFloat($('.other').val());
-  var insurance = parseFloat($('.insurance').val());
-  var gst = parseFloat($('.gst').val());
-  var loading = parseFloat($('.loading').val())
+  var other = parseInt($('.other').val());
+  var insurance = parseInt($('.insurance').val());
+  var gst = parseInt($('.gst').val());
+  var loading = parseInt($('.loading').val())
   if (isNaN(other)){ other = 0 ;}
   if (isNaN(insurance)){ insurance = 0}
   if (isNaN(gst)){gst = 0}
